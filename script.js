@@ -1,30 +1,33 @@
-const input = [1, 2, 3, 4];
-
-const promise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve(input);
-  }, 3000);
-});
-
-const filterPromise = promise.then((arr) => {
+//your JS code here. If required.
+function manipulateData(numbers) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const filteredArr = arr.filter((num) => num % 2 === 0);
-      resolve(filteredArr);
-    }, 1000);
+      resolve(numbers);
+    }, 3000);
+  })
+  .then((numbers) => {
+    // filter out odd numbers
+    const evenNumbers = numbers.filter(num => num % 2 === 0);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(evenNumbers);
+      }, 1000);
+    });
+  })
+  .then((evenNumbers) => {
+    // multiply even numbers by 2
+    const result = evenNumbers.map(num => num * 2);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(result);
+      }, 2000);
+    });
   });
-});
+}
 
-const mapPromise = filterPromise.then((arr) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const mappedArr = arr.map((num) => num * 2);
-      resolve(mappedArr);
-    }, 2000);
-  });
-});
+const outputElement = document.getElementById("output");
+const inputArray = [1, 2, 3, 4];
 
-mapPromise.then((arr) => {
-  const outputDiv = document.getElementById("output");
-  outputDiv.innerText = arr.join(", ");
+manipulateData(inputArray).then((result) => {
+  outputElement.textContent = result.join(", ");
 });
